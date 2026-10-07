@@ -159,7 +159,7 @@ def gradient_descent(x,y,w,b,alpha,compute_cost,compute_gradient,num_iters):
 ### Z-score标准化
 属于特征标准化，特征化之后该特征均值=0，标准差=1，用于消除不同特征量级差异从而使收敛速度大幅变快。
 ```math
-x^{(i)}_j = \dfrac{x^{(i)}_j - \mu_j}{\sigma_j} \tag{4}
+x^{(i)}_j = \dfrac{x^{(i)}_j - \mu_j}{\sigma_j} 
 ```
 
 其中：
