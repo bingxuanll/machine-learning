@@ -8,9 +8,17 @@
 
 ### 代价函数J
 >全部m个样本损失的平均值
-  $$J(w,b) = \frac{1}{2m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})^2 \tag{1}$$ 
+ 
+  $$
+  J(w,b) = \frac{1}{2m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})^2 \tag{1}
+  $$ 
+
 其中：
-$$f_{w,b}(x^{(i)}) = wx^{(i)} + b \tag{2}$$
+
+$$
+f_{w,b}(x^{(i)}) = wx^{(i)} + b \tag{2}
+$$
+
 - **单特征值x = np.array([ ]),w = _**
 ```python
 def compute_cost(x,y,w,b):
@@ -38,18 +46,24 @@ def compute_cost(x,y,w,b):
 ### 梯度下降
 >沿着代价函数J梯度的反方向，一点点更新参数w,b，不断减小代价函数，直到收敛
 
-- **单特征值x = np.array([ ]),w = _**
-$$\begin{align*} \text{repeat}&\text{ until convergence:} \; \lbrace \newline
+- **单特征值x = np.array([ ]),w = _**  
+  
+$$
+\begin{align*} \text{repeat}&\text{ until convergence:} \; \lbrace \newline
 \;  w &= w -  \alpha \frac{\partial J(w,b)}{\partial w} \tag{3}  \; \newline 
  b &= b -  \alpha \frac{\partial J(w,b)}{\partial b}  \newline \rbrace
-\end{align*}$$
+\end{align*}
+$$
+
 其中：
+
 $$
 \begin{align}
 \frac{\partial J(w,b)}{\partial w}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)})x^{(i)} \tag{4}\\
   \frac{\partial J(w,b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{w,b}(x^{(i)}) - y^{(i)}) \tag{5}\\
 \end{align}
 $$
+
 ```python
 #求偏导
 def compute_gradient(x,y,w,b):
@@ -94,17 +108,23 @@ def gradient_descent(x,y,w_in,b_in,alpha,compute_gradient,compute_cost,num_iters
     return w,b,J_his,P_his
 ```
 - **多特征值x = np.array([],[],[]....),w = [ , ,...]  -->  w.shape[0] == x.shape[1]**
-$$\begin{align*} \text{repeat}&\text{ until convergence:} \; \lbrace \newline\;
+  
+$$
+\begin{align*} \text{repeat}&\text{ until convergence:} \; \lbrace \newline\;
 & w_j = w_j -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial w_j} \tag{5}  \; & \text{for j = 0..n-1}\newline
 &b\ \ = b -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial b}  \newline \rbrace
-\end{align*}$$
+\end{align*}
+$$
+
 其中：
+
 $$
 \begin{align}
 \frac{\partial J(\mathbf{w},b)}{\partial w_j}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)} \tag{6}  \\
 \frac{\partial J(\mathbf{w},b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)}) \tag{7}
 \end{align}
 $$
+
 ```python
 #偏导 
 def compute_gradient(x,y,w,b):
@@ -145,14 +165,20 @@ def gradient_descent(x,y,w,b,alpha,compute_cost,compute_gradient,num_iters):
 3. **alpha太大：** 代价震荡，来回跳动，甚至导致越来越大，不收敛
 ### Z-score标准化
 属于特征标准化，特征化之后该特征均值=0，标准差=1，用于消除不同特征量级差异从而使收敛速度大幅变快。
-$$x^{(i)}_j = \dfrac{x^{(i)}_j - \mu_j}{\sigma_j} \tag{4}$$ 
+
+$$
+x^{(i)}_j = \dfrac{x^{(i)}_j - \mu_j}{\sigma_j} \tag{4}
+$$ 
+
 其中：
+
 $$
 \begin{align}
 \mu_j &= \frac{1}{m} \sum_{i=0}^{m-1} x^{(i)}_j \tag{5}\\
 \sigma^2_j &= \frac{1}{m} \sum_{i=0}^{m-1} (x^{(i)}_j - \mu_j)^2  \tag{6}
 \end{align}
 $$
+
 ```python- [监督学习](#监督学习)
 - [无监督学习](#无监督学习)
 - [线性回归模型 f=wx+b](#线性回归模型-fwxb)
@@ -188,18 +214,35 @@ def compute_gradient_matrix(x,y,w,b):
 ```
 ## 逻辑回归模型
 ### sigmoid函数
-$$g(z) = \frac{1}{1+e^{-z}}\tag{1}$$
+
+$$
+g(z) = \frac{1}{1+e^{-z}}\tag{1}
+$$
+
 其中：
-$$z = w*x+b$$
+
+$$
+z = w*x+b
+$$
+
 ### 损失函数Loss
 区别：
 - Loss是衡量单个示例与其目标值的差异
 - Cost是衡量训练集上的损失
-$$loss(f_{\mathbf{w},b}(\mathbf{x}^{(i)}), y^{(i)}) = (-y^{(i)} \log\left(f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) - \left( 1 - y^{(i)}\right) \log \left( 1 - f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right)$$
+  
+$$
+loss(f_{\mathbf{w},b}(\mathbf{x}^{(i)}), y^{(i)}) = (-y^{(i)} \log\left(f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) - \left( 1 - y^{(i)}\right) \log \left( 1 - f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right)
+$$
+
 其中：
+
 $f_{\mathbf{w},b}(\mathbf{x}^{(i)}) = g(\mathbf{w} \cdot\mathbf{x}^{(i)}+b)$  g是sigmoid函数
 ### 代价函数J
-$$ J(\mathbf{w},b) = \frac{1}{m} \sum_{i=0}^{m-1} \left[ loss(f_{\mathbf{w},b}(\mathbf{x}^{(i)}), y^{(i)}) \right] \tag{1}$$
+
+$$ 
+J(\mathbf{w},b) = \frac{1}{m} \sum_{i=0}^{m-1} \left[ loss(f_{\mathbf{w},b}(\mathbf{x}^{(i)}), y^{(i)}) \right] \tag{1}
+$$
+
 ```python
 def compute_cost_logistic(x,y,w,b):
     m = x.shape[0]
@@ -216,17 +259,25 @@ def compute_cost_logistic(x,y,w,b):
 >$z = \mathbf{w} \cdot \mathbf{x} + b$  
     $f_{\mathbf{w},b}(x) = g(z)$  
     $g(z) = \frac{1}{1+e^{-z}}$   
-$$\begin{align*}
+
+$$
+\begin{align*}
 &\text{repeat until convergence:} \; \lbrace \\
 &  \; \; \;w_j = w_j -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial w_j} \tag{1}  \; & \text{for j := 0..n-1} \\ 
 &  \; \; \;  \; \;b = b -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial b} \\
 &\rbrace
-\end{align*}$$
+\end{align*}
+$$
+
 其中：
-$$\begin{align*}
+
+$$
+\begin{align*}
 \frac{\partial J(\mathbf{w},b)}{\partial w_j}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)} \tag{2} \\
 \frac{\partial J(\mathbf{w},b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)}) \tag{3} 
-\end{align*}$$
+\end{align*}
+$$
+
 ```python
 def compute_gradient_logistic(x,y,w,b):
     m,n = x.shape
@@ -261,18 +312,28 @@ def gradient_descent(x,y,w,b,alpha,num_iters):
 3. 应用正则化
 ### 线性回归中正则化
 #### 代价函数J
-$$J(\mathbf{w},b) = \frac{1}{2m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})^2  + \frac{\lambda}{2m}  \sum_{j=0}^{n-1} w_j^2 \tag{1}$$ 
+
+$$
+J(\mathbf{w},b) = \frac{1}{2m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})^2  + \frac{\lambda}{2m}  \sum_{j=0}^{n-1} w_j^2 \tag{1}
+$$ 
+
 #### 梯度下降
-$$\begin{align*}
+$$
+\begin{align*}
 &\text{repeat until convergence:} \; \lbrace \\
 &  \; \; \;w_j = w_j -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial w_j} \tag{1}  \; & \text{for j := 0..n-1} \\ 
 &  \; \; \;  \; \;b = b -  \alpha \frac{\partial J(\mathbf{w},b)}{\partial b} \\
 &\rbrace
-\end{align*}$$
-$$\begin{align*}
+\end{align*}
+$$
+
+$$
+\begin{align*}
 \frac{\partial J(\mathbf{w},b)}{\partial w_j}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)})x_{j}^{(i)}  +  \frac{\lambda}{m} w_j \tag{2} \\
 \frac{\partial J(\mathbf{w},b)}{\partial b}  &= \frac{1}{m} \sum\limits_{i = 0}^{m-1} (f_{\mathbf{w},b}(\mathbf{x}^{(i)}) - y^{(i)}) \tag{3} 
-\end{align*}$$
+\end{align*}
+$$
+
 ```python
 def compute_cost_linear_reg(x,y,w,b,lambda_):
     m = x.shape
@@ -315,7 +376,11 @@ def gradient_descent_linear_reg(x,y,w,b,alpha,num_iters):
 ```
 ### 逻辑回归中正则化
 #### 代价函数J
-$$J(\mathbf{w},b) = \frac{1}{m}  \sum_{i=0}^{m-1} \left[ -y^{(i)} \log\left(f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) - \left( 1 - y^{(i)}\right) \log \left( 1 - f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) \right] + \frac{\lambda}{2m}  \sum_{j=0}^{n-1} w_j^2 \tag{3}$$
+
+$$
+J(\mathbf{w},b) = \frac{1}{m}  \sum_{i=0}^{m-1} \left[ -y^{(i)} \log\left(f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) - \left( 1 - y^{(i)}\right) \log \left( 1 - f_{\mathbf{w},b}\left( \mathbf{x}^{(i)} \right) \right) \right] + \frac{\lambda}{2m}  \sum_{j=0}^{n-1} w_j^2 \tag{3}
+$$
+
 #### 梯度下降
 >与线性回归正则化中梯度下降一样
 ```python
